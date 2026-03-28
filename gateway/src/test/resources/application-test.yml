@@ -1,0 +1,58 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  data:
+    redis:
+      host: localhost
+      port: 6370  # use a non-conflicting port — test will mock Redis
+
+services:
+  user-service:
+    url: http://localhost:8081
+    path-prefix: /api/users
+  order-service:
+    url: http://localhost:8082
+    path-prefix: /api/orders
+  product-service:
+    url: http://localhost:8083
+    path-prefix: /api/products
+
+jwt:
+  secret: "test-secret-key-that-is-long-enough-for-hmac-sha256-algorithm"
+  expiration-ms: 3600000
+
+rate-limit:
+  default-user-limit: 1000
+  window-seconds: 60
+  default-endpoint-limits:
+    "/api/users": 2000
+    "/api/orders": 2000
+    "/api/products": 2000
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      user-service:
+        failure-rate-threshold: 50
+        sliding-window-size: 5
+        minimum-number-of-calls: 3
+        wait-duration-in-open-state: 100ms
+      order-service:
+        failure-rate-threshold: 50
+        sliding-window-size: 5
+        minimum-number-of-calls: 3
+        wait-duration-in-open-state: 100ms
+      product-service:
+        failure-rate-threshold: 50
+        sliding-window-size: 5
+        minimum-number-of-calls: 3
+        wait-duration-in-open-state: 100ms

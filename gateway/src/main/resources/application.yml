@@ -1,0 +1,100 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/gateway_db}
+    username: ${SPRING_DATASOURCE_USERNAME:gateway}
+    password: ${SPRING_DATASOURCE_PASSWORD:gateway_pass}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 20
+          min-idle: 5
+
+# Downstream service URLs
+services:
+  user-service:
+    url: ${USER_SERVICE_URL:http://localhost:8081}
+    path-prefix: /api/users
+  order-service:
+    url: ${ORDER_SERVICE_URL:http://localhost:8082}
+    path-prefix: /api/orders
+  product-service:
+    url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+    path-prefix: /api/products
+
+# JWT config
+jwt:
+  secret: "+lqEVawR6IgRswssMAKw8Kr8STgn9QWjRwS19N2WcWo="
+  expiration-ms: 86400000  # 24 hours
+
+# Rate limiting config (requests per minute)
+rate-limit:
+  default-user-limit: 100
+  default-endpoint-limits:
+    "/api/users": 200
+    "/api/orders": 150
+    "/api/products": 300
+  window-seconds: 60
+
+# Circuit breaker config
+resilience4j:
+  circuitbreaker:
+    instances:
+      user-service:
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 80
+        slow-call-duration-threshold: 3s
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 30s
+        automatic-transition-from-open-to-half-open-enabled: true
+      order-service:
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 80
+        slow-call-duration-threshold: 3s
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 30s
+        automatic-transition-from-open-to-half-open-enabled: true
+      product-service:
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 80
+        slow-call-duration-threshold: 3s
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 30s
+        automatic-transition-from-open-to-half-open-enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus,circuitbreakers
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.gateway: DEBUG
+    io.github.resilience4j: INFO
