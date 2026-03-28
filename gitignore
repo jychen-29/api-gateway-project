@@ -1,0 +1,122 @@
+# ===========================
+# Java / Maven (Spring Boot)
+# ===========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+# Maven wrapper
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ===========================
+# Node / React / TypeScript
+# ===========================
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# Parcel cache
+.cache/
+.parcel-cache/
+
+# Next.js / Vite
+.next/
+.vite/
+out/
+
+# env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ===========================
+# Docker
+# ===========================
+# Ignore local override files but keep the main compose file
+docker-compose.override.yml
+docker-compose.local.yml
+.docker/
+
+# ===========================
+# IDE — IntelliJ IDEA / JetBrains
+# ===========================
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ===========================
+# IDE — VS Code
+# ===========================
+.vscode/
+*.code-workspace
+
+# ===========================
+# IDE — Eclipse
+# ===========================
+.classpath
+.project
+.settings/
+bin/
+
+# ===========================
+# OS artifacts
+# ===========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ===========================
+# Logs
+# ===========================
+logs/
+*.log
+spring.log
+
+# ===========================
+# Secrets & credentials
+# ===========================
+*.pem
+*.key
+*.p12
+*.jks
+application-local.yml
+application-local.properties
+application-secrets.yml
+secrets/
+
+# ===========================
+# Test & coverage reports
+# ===========================
+coverage/
+*.lcov
+surefire-reports/
+failsafe-reports/
+test-results/
+
+# ===========================
+# Misc
+# ===========================
+*.swp
+*.swo
+*~
+.gradle/
