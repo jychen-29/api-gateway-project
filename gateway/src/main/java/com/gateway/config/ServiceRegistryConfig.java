@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@ConfigurationProperties(prefix = "services")
+@ConfigurationProperties
 @Getter
 @Setter
 public class ServiceRegistryConfig {
