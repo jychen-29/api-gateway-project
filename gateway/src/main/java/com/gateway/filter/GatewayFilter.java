@@ -106,7 +106,13 @@ public class GatewayFilter implements Filter {
         // --- Step 5: Circuit Breaker wrap ---
         CircuitBreaker cb = circuitBreakerManager.getCircuitBreaker(serviceName);
         Supplier<ResponseEntity<byte[]>> proxyCall = CircuitBreaker.decorateSupplier(cb,
-                () -> forwardRequest(request, serviceUrl, correlationId, userId));
+                () -> {
+                    try {
+                        return forwardRequest(request, serviceUrl, correlationId, userId);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
         try {
             ResponseEntity<byte[]> downstream = proxyCall.get();
