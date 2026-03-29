@@ -72,7 +72,7 @@ public class CircuitBreakerManager {
                     metrics.getFailureRate(),
                     metrics.getNumberOfFailedCalls(),
                     metrics.getNumberOfSuccessfulCalls(),
-                    metrics.getNumberOfNotPermittedCalls()
+                    (int) metrics.getNumberOfNotPermittedCalls()
             ));
         }
         return statuses;
