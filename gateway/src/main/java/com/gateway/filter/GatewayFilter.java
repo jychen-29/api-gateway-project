@@ -120,8 +120,11 @@ public class GatewayFilter implements Filter {
 
             // Copy downstream response to client
             response.setStatus(downstream.getStatusCode().value());
-            downstream.getHeaders().forEach((name, values) ->
-                    values.forEach(v -> response.addHeader(name, v)));
+            downstream.getHeaders().forEach((name, values) -> {
+                if (!name.equalsIgnoreCase("Transfer-Encoding")) {
+                    values.forEach(v -> response.addHeader(name, v));
+                }
+            });
             response.setHeader("X-Correlation-ID", correlationId);
             if (downstream.getBody() != null) {
                 response.getOutputStream().write(downstream.getBody());
