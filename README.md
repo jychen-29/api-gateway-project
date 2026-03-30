@@ -343,3 +343,6 @@ Watch the dashboard as circuit breakers trip and rate limits kick in in real tim
 | `resilience4j.circuitbreaker.instances.*.failure-rate-threshold` | `50` | % failures to open circuit |
 | `resilience4j.circuitbreaker.instances.*.wait-duration-in-open-state` | `30s` | Cooldown before HALF_OPEN |
 | `resilience4j.circuitbreaker.instances.*.sliding-window-size` | `10` | Calls evaluated in window |
+
+## AI Usage
+Claude AI was used for project structuring and code implementation with project requirement. It was also used at fixing bugs when testing the fuctionality in local.
